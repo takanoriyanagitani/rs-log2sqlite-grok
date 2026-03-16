@@ -1,0 +1,51 @@
+[package]
+name = "rs-log2sqlite-grok"
+version = "0.1.0"
+edition = "2024"
+
+exclude = [
+]
+
+[[bin]]
+name = "log2sqlite-grok"
+required-features = ["log2sqlite"]
+
+[[bin]]
+name = "log2parsed"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+
+[profile.release-wasi]
+inherits = "release"
+lto = true
+strip = true
+opt-level = 's'
+codegen-units = 1
+
+[dependencies.rusqlite]
+version = "0.38"
+default-features = false
+optional = true
+features = [
+    "bundled",
+]
+
+[dependencies.grok]
+version = "2.4"
+default-features = false
+features = [
+    "fancy-regex", # works easy with wasi
+]
+
+[dependencies.clap]
+version = "4.5"
+features = ["derive"]
+
+[features]
+log2sqlite = [ "rusqlite" ]
